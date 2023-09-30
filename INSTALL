@@ -5,6 +5,9 @@ So, installation procedures:
 
 1) Open terminal, execute `check-requirements` script, you should see, that
    all required components are correctly installed and available.
+   pbmtojbg -> jbigkit-bin
+   identify -> imagemagick
+   inotify-wait -> inotify-tools
 
 2) Install unavailable components
 

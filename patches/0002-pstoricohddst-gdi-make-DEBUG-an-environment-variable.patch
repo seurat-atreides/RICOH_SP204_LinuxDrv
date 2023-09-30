@@ -1,0 +1,38 @@
+From 2d15c3c727bf00d06fdde915842c022677963fb3 Mon Sep 17 00:00:00 2001
+From: James Bottomley <JBottomley@Parallels.com>
+Date: Thu, 24 Jul 2014 17:03:32 -0700
+Subject: [PATCH 2/2] pstoricohddst-gdi: make DEBUG an environment variable
+
+More useful than editing the script to get debugging.  Also remove output dir
+only if DEBUG != yes
+
+Signed-off-by: James Bottomley <JBottomley@Parallels.com>
+---
+ pstoricohddst-gdi | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/pstoricohddst-gdi b/pstoricohddst-gdi
+index 9db3b13..1e10679 100755
+--- a/pstoricohddst-gdi
++++ b/pstoricohddst-gdi
+@@ -1,7 +1,7 @@
+ #!/bin/bash
+ 
+ # Debug mode: change to 'yes' to enable
+-DEBUG=no
++DEBUG=${DEBUG-no}
+ 
+ function log() {
+     [ "${DEBUG}" = "yes" ] && echo $* | logger -t "$0[$$]"
+@@ -177,6 +177,7 @@ mkdir -p $uid
+ 
+ }
+ 
+-#rm -rf $uid;
++# only remove the output dir if not debugging
++[ ! "${DEBUG}" = "yes" ] && rm -rf $uid;
+ 
+ exit 0
+-- 
+2.0.1
+

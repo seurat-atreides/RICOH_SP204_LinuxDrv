@@ -1,0 +1,32 @@
+From e64513201f5bdd0c89dedad5e07ec00b75c8b052 Mon Sep 17 00:00:00 2001
+From: James Bottomley <JBottomley@Odin.com>
+Date: Thu, 13 Aug 2015 15:39:16 -0700
+Subject: sp204: add hack to make cartridges last longer
+
+simply tell the printer there are 10x fewer dots per page.
+
+Signed-off-by: James Bottomley <JBottomley@Odin.com>
+---
+ pstoricohddst-gdi | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/pstoricohddst-gdi b/pstoricohddst-gdi
+index 1e10679..71d0f8d 100755
+--- a/pstoricohddst-gdi
++++ b/pstoricohddst-gdi
+@@ -40,6 +40,12 @@ function output_page() {
+     # /1 causes bc to round to the nearest integer because scale=0
+     ##
+     dots=$(echo "(${x[0]}*${x[1]}*(1-${x[2]}))/1"|bc)
++    ##
++    # FIX: toner cartridge runs out way too fast with this dots
++    #      calculation above and once it decides it's empty, you
++    #      can't force it to print.  So set dots to an artificially 
++    #      low number
++    dots=$(echo "$dots/10"|bc)
+ 
+     # Flushing page header
+     cat <<EOF
+-- 
+2.1.4
+

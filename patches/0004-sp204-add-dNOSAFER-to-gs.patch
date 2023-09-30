@@ -1,0 +1,40 @@
+From 6985869fb26feeb109487b5f7970ea19ad19ea67 Mon Sep 17 00:00:00 2001
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+Date: Fri, 22 May 2020 12:30:54 -0700
+Subject: [PATCH 4/4] sp204: add -dNOSAFER to gs
+
+The newer gs or cups printers refuse to write the -sOutputFile to the
+temporary directory unless -dNOSAFER is specified.  Apparently
+something has happened to trigger safe mode in cups and without this
+the filter will no-longer send any output to the printer.
+
+Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+---
+ pstoricohddst-gdi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/pstoricohddst-gdi b/pstoricohddst-gdi
+index 71d0f8d..4d3accd 100755
+--- a/pstoricohddst-gdi
++++ b/pstoricohddst-gdi
+@@ -158,7 +158,7 @@ mkdir -p $uid
+ 
+ 	# Converting from PostScript to PostScript-monochrome, then to PBM image format (per page)
+ 	#gs -sDEVICE=ps2write -sOutputFile=- -r$resolution -dQUIET -dBATCH -dNOPAUSE - | 
+-	gs -sDEVICE=pbmraw -sOutputFile=${uid}/%03d-page.pbm -r$resolution -dQUIET -dBATCH -dNOPAUSE -
++	gs -sDEVICE=pbmraw -sOutputFile=${uid}/%03d-page.pbm -r$resolution -dQUIET -dBATCH -dNOPAUSE -dNOSAFER -
+ 
+ 	stop
+ 	wait
+@@ -169,7 +169,7 @@ mkdir -p $uid
+ 
+ 	# Converting from PostScript to PostScript-monochrome, then to PBM image format (per page)
+ 	log "Converting document to pages"
+-	gs -sDEVICE=ps2write -sOutputFile=- -r$resolution -dQUIET -dBATCH -dNOPAUSE - | gs -sDEVICE=pbmraw -sOutputFile=${uid}/%03d-page.pbm -r$resolution -dQUIET -dBATCH -dNOPAUSE -
++	gs -sDEVICE=ps2write -sOutputFile=- -r$resolution -dQUIET -dBATCH -dNOPAUSE - | gs -sDEVICE=pbmraw -sOutputFile=${uid}/%03d-page.pbm -r$resolution -dQUIET -dBATCH -dNOPAUSE -dNOSAFER -
+ 	log "Conversion complete"
+ 
+ 	output_header
+-- 
+2.26.1
+
