@@ -1,7 +1,4 @@
-First of all, you bought wrong printer :) This "driver" is not in 
-production state. It was only an expirement.
-
-So, installation procedures:
+Installation procedures:
 
 1) Open terminal, execute `check-requirements` script, you should see, that
    all required components are correctly installed and available.
